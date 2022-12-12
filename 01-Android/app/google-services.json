@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "443005965913",
+    "project_id": "movcomp-kapc",
+    "storage_bucket": "movcomp-kapc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443005965913:android:a0dab6da842bf452754348",
+        "android_client_info": {
+          "package_name": "com.example.movcompkapc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443005965913-2aobgj27coi4jgehhhkgfu44c0klua8j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK0QHOk3r0Q8CAKiSSHku8g153dqkjrbQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443005965913-2aobgj27coi4jgehhhkgfu44c0klua8j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
