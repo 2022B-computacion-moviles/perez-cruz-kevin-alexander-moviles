@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MovCompKAPC</string>
+    // Portrait - English
+    <string name="hola_mundo">Hello World Portrait</string>
+    <color name="color_hola_mundo">#14A44D</color>
+    <color name="bg_color">#FFFFFFFF</color>
+    <tool name="hello_icon">@tools:sample/avatars[1]</tool>
+</resources>

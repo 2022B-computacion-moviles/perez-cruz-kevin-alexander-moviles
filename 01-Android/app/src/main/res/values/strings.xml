@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">MovCompKAPC</string>
+    <string name="hola_mundo">Hola mundo</string>
+    <color name="color_hola_mundo">#FFBB86FC</color>
+    <color name="bg_color">#104a8e</color>
+    <tool name="hello_icon"></tool>
+    // Portrait - Spanish
+        // Hola Mundo Vertical
+        // #3B71CA
+        // #104a8e
+    // Landscape - Spanish
+        // Hola Mundo Horizontal
+        // #9FA6B2
+        // #48494b
+    // Portrait - English
+        // Hello World Portrait
+        // #14A44D
+        // #FFFFFFFF
+    // Landscape - English
+        // Hello World Landscape
+        // #DC4C64
+        // #FFC0CB
 </resources>

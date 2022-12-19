@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MovCompKAPC</string>
+    <string name="hola_mundo">Hola mundo land</string>
+    <color name="color_hola_mundo">#FF03DAC5</color>
+</resources>

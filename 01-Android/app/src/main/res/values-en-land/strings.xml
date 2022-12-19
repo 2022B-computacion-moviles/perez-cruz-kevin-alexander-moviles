@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MovCompKAPC</string>
+    // Landscape - English
+    <string name="hola_mundo">Hello World Landscape</string>
+    <color name="color_hola_mundo">#DC4C64</color>
+    <color name="bg_color">#FFC0CB</color>
+    <tool name="hello_icon">@tools:sample/avatars[0]</tool>
+</resources>
