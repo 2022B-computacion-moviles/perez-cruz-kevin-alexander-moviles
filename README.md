@@ -1,3 +1,5 @@
 # perez-cruz-kevin-alexander-moviles
 
-COMPUTACIÓN
+Aplicacion Móviles - GR1CC<br>
+Kevin Pérez<br>
+2022-B
