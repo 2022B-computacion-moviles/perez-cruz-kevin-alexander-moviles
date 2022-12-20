@@ -5,5 +5,4 @@
     <string name="hola_mundo">Hola Mundo Vertical</string>
     <color name="color_hola_mundo">#3B71CA</color>
     <color name="bg_color">#104a8e</color>
-    <tool name="hello_icon">@tools:sample/avatars[3]</tool>
 </resources>

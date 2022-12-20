@@ -3,21 +3,29 @@
     <string name="hola_mundo">Hola mundo</string>
     <color name="color_hola_mundo">#FFBB86FC</color>
     <color name="bg_color">#104a8e</color>
-    <tool name="hello_icon"></tool>
+    <string name="title_activity_aciclo_vida">ACicloVida</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     // Portrait - Spanish
-        // Hola Mundo Vertical
-        // #3B71CA
-        // #104a8e
+    // Hola Mundo Vertical
+    // #3B71CA
+    // #104a8e
     // Landscape - Spanish
-        // Hola Mundo Horizontal
-        // #9FA6B2
-        // #48494b
+    // Hola Mundo Horizontal
+    // #9FA6B2
+    // #48494b
     // Portrait - English
-        // Hello World Portrait
-        // #14A44D
-        // #FFFFFFFF
+    // Hello World Portrait
+    // #14A44D
+    // #FFFFFFFF
     // Landscape - English
-        // Hello World Landscape
-        // #DC4C64
-        // #FFC0CB
+    // Hello World Landscape
+    // #DC4C64
+    // #FFC0CB
 </resources>
