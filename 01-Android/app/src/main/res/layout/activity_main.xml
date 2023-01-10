@@ -43,4 +43,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btn_ir_list_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LIST VIEW"
+        app:layout_constraintEnd_toEndOf="@+id/btn_ciclo_vida"
+        app:layout_constraintStart_toStartOf="@+id/btn_ciclo_vida"
+        tools:layout_editor_absoluteY="482dp" />
+
+    <Button
+        android:id="@+id/btn_intent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I. Explícito"
+        app:layout_constraintEnd_toEndOf="@+id/btn_ciclo_vida"
+        app:layout_constraintStart_toStartOf="@+id/btn_ciclo_vida"
+        tools:layout_editor_absoluteY="262dp" />
+
+    <Button
+        android:id="@+id/btn_ir_intent_implicito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I. Implícito"
+        app:layout_constraintEnd_toEndOf="@+id/btn_intent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_intent"
+        tools:layout_editor_absoluteY="187dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,4 +28,11 @@
     // Hello World Landscape
     // #DC4C64
     // #FFC0CB
+
+    <string-array name="string_array_opciones_dialogo">
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miércoles</item>
+    </string-array>
+
 </resources>
