@@ -66,6 +66,12 @@ class MainActivity : AppCompatActivity() {
                 irActividad(BListView::class.java)
             }
 
+        val botonBDD = findViewById<Button>(R.id.btn_ir_bdd)
+        botonBDD
+            .setOnClickListener{
+                irActividad(ECrudEntrenador::class.java)
+            }
+
         val botonIntentImplicito = findViewById<Button>(R.id.btn_ir_intent_implicito)
         botonIntentImplicito
             .setOnClickListener {
