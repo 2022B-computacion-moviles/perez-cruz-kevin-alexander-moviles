@@ -1,0 +1,1 @@
+{"salario":120000.0,"genero":M,"pacientes":"[{\"id\":1,\"peso\":47.5,\"nombre\":\"Kevin Perez\",\"genero\":\"M\",\"tieneSeguro\":true},{\"id\":2,\"peso\":58.0,\"nombre\":\"Melany Sandoval\",\"genero\":\"F\",\"tieneSeguro\":false}]","id":1,"nombre":"Juan Perez","esEspecialista":true}

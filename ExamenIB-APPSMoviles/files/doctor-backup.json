@@ -1,0 +1,1 @@
+{"esEspecialista" : true, "genero" : {}, "id" : 1, "nombre" : "Juan Perez", "pacientes" : [{"genero" : {}, "id" : 1, "nombre" : "Kevin Perez", "peso" : 47.5, "tieneSeguro" : true}, {"genero" : {}, "id" : 2, "nombre" : "Melany Sandoval", "peso" : 58.0, "tieneSeguro" : false}], "salario" : 120000.0}
