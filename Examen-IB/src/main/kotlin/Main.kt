@@ -67,7 +67,7 @@ fun mostrarMenuGeneral() : Int {
 }
 
 fun cambiarOpcionCRUD() : Boolean {
-    print("\n\n¿Desea realizar otra operación CRUD? (S/N): ")
+    print("\n\n¿Desea regresar al menú CRUD? (S/N): ")
     return reader.readLine().toLowerCase() == "n"
 }
 
@@ -222,7 +222,7 @@ fun update(){
         }
         2 -> {
             for (medico in JSONMedicos) {
-                println("${medico.id} - ${medico.nombre}")
+                println("${medico.id}: ${medico.nombre}")
             }
             print("Ingrese el identificador del Médico con los pacientes a actualizar: ")
             var idSearch: Int = reader.readLine().toInt()
@@ -245,33 +245,28 @@ fun update(){
 
                         if (atributeUpdater("identificador", false)){
                             print("Ingrese el nuevo identificador: ")
-                            reader.readLine()
                             pacienteTemp!!.id = reader.readLine().toInt()
                         }
                         if (atributeUpdater("nombre", false)){
                             print("Ingrese el nuevo nombre: ")
-                            reader.readLine()
                             pacienteTemp!!.nombre = reader.readLine()
                         }
                         if (atributeUpdater("peso", false)){
                             print("Ingrese el nuevo peso: ")
-                            reader.readLine()
                             pacienteTemp!!.peso = reader.readLine().toDouble()
                         }
                         if (atributeUpdater("estado del Seguro", false)){
                             print("Ingrese el nuevo estado del Seguro (S/N): ")
-                            reader.readLine()
                             pacienteTemp!!.tieneSeguro = reader.readLine().toLowerCase() == "s"
                         }
                         if (atributeUpdater("género", false)){
                             print("Ingrese el nuevo género (M: masculino, F: Femenino, I: No definido): ")
-                            reader.readLine()
                             pacienteTemp!!.genero = reader.readLine().get(0)
                         }
                         var oldPaciente = medicoTemp.pacientes.filter { it.id == oldIDPactient }.firstOrNull()
                         val indexReplace = medicoTemp.pacientes.indexOf(oldPaciente)
-                        if (indexReplace > 0){
-                            medicoTemp.pacientes.set(oldIDPactient, pacienteTemp!!)
+                        if (medicoTemp.pacientes.any { it.id == oldIDPactient }){
+                            medicoTemp.pacientes.set(indexReplace, pacienteTemp!!)
                         }
                         var oldMedico = JSONMedicos.filter { it.id == idSearch }.firstOrNull()
                         val indexReplaceMedico = JSONMedicos.indexOf(oldMedico)
@@ -307,7 +302,7 @@ fun delete() {
         1 -> {
             var opcionEraseMedico : Boolean = true
             for (medico in JSONMedicos) {
-                println("${medico.id} - ${medico.nombre}")
+                println("${medico.id}: ${medico.nombre}")
             }
             print("Ingrese el identificador del Médico a eliminar: ")
             var idMedErase : Int = reader.readLine().toInt()
@@ -324,52 +319,56 @@ fun delete() {
         }
         2 -> {
             for (medico in JSONMedicos) {
-                println("${medico.id} - ${medico.nombre}")
+                println("${medico.id}: ${medico.nombre}")
             }
             print("Ingrese el identificador del Médico con los pacientes a eliminar: ")
             var idMedErase = reader.readLine().toInt()
+            if (JSONMedicos.any { it.id == idMedErase}){
+                var medicoTemp = JSONMedicos.filter { it.id == idMedErase }.firstOrNull()
+                val indexMedEdited = JSONMedicos.indexOf(medicoTemp)
 
-            var medicoTemp = JSONMedicos.filter { it.id == idMedErase }.firstOrNull()
-            val indexMedEdited = JSONMedicos.indexOf(medicoTemp)
-
-            var opcionErasePaciente : Boolean = true
-            while (opcionErasePaciente) {
-                for (paciente in medicoTemp!!.pacientes) {
-                    paciente.toString()
-                    println()
-                }
-                println("1. Eliminar un paciente en específico por su identificador")
-                println("2. Eliminar todos los pacientes de este médico")
-                print("Selecione una opción: ")
-                var optionErasePacByID : Int = reader.readLine().toInt()
-                when (optionErasePacByID) {
-                    1 -> {
-                        print("Ingrese el identificador del paciente a eliminar: ")
-                        var idPacErase : Int = reader.readLine().toInt()
-                        if (medicoTemp.pacientes.any { it.id == idPacErase }) {
-                            var erasedPaciente = medicoTemp.pacientes.filter { it.id == idPacErase }.firstOrNull()
-                            val indexErasePaciente = medicoTemp.pacientes.indexOf(erasedPaciente)
-                            medicoTemp.pacientes.removeAt(indexErasePaciente)
-                            JSONMedicos.set(indexMedEdited, medicoTemp!!)
-                            helper.modifyFile(JSONMedicos)
+                var opcionErasePaciente : Boolean = true
+                while (opcionErasePaciente) {
+                    for (paciente in medicoTemp!!.pacientes) {
+                        println(paciente.toString())
+                    }
+                    println("1. Eliminar un paciente en específico por su identificador")
+                    println("2. Eliminar todos los pacientes de este médico")
+                    print("Selecione una opción: ")
+                    var optionErasePacByID : Int = reader.readLine().toInt()
+                    when (optionErasePacByID) {
+                        1 -> {
+                            print("Ingrese el identificador del paciente a eliminar: ")
+                            var idPacErase : Int = reader.readLine().toInt()
+                            if (medicoTemp.pacientes.any { it.id == idPacErase }) {
+                                var erasedPaciente = medicoTemp.pacientes.filter { it.id == idPacErase }.firstOrNull()
+                                val indexErasePaciente = medicoTemp.pacientes.indexOf(erasedPaciente)
+                                medicoTemp.pacientes.removeAt(indexErasePaciente)
+                                JSONMedicos.set(indexMedEdited, medicoTemp!!)
+                                helper.modifyFile(JSONMedicos)
+                            }
+                        }
+                        2 -> {
+                            print("¿Seguro desea eliminar todos los pacientes de este médico? (S/N): ")
+                            if (reader.readLine().toLowerCase() == "s"){
+                                medicoTemp.pacientes.clear()
+                                JSONMedicos.set(indexMedEdited, medicoTemp)
+                                println("Se han eliminado todos los pacientes de este médico")
+                                helper.modifyFile(JSONMedicos)
+                            }
+                        }
+                        3 -> {
+                            println("Ingrese una opción válida")
                         }
                     }
-                    2 -> {
-                        print("¿Seguro desea eliminar todos los pacientes de este médico? (S/N): ")
-                        if (reader.readLine().toLowerCase() == "s"){
-                            medicoTemp.pacientes.clear()
-                            JSONMedicos.set(indexMedEdited, medicoTemp)
-                            println("Se han eliminado todos los pacientes de este médico")
-                            helper.modifyFile(JSONMedicos)
-                        }
-                    }
-                    3 -> {
-                        println("Ingrese una opción válida")
-                    }
+                    print("\n¿Desea Continuar? (S/N): ")
+                    opcionErasePaciente  = reader.readLine().toLowerCase() == "s"
                 }
-                print("\n¿Desea Continuar? (S/N): ")
-                opcionErasePaciente  = reader.readLine().toLowerCase() == "s"
             }
+            else {
+                println("Ingrese un indentificador existente")
+            }
+
         }
         3 -> {
             print("¿Seguro desea eliminar todos los registros en el Consultorio? (S/N): ")
