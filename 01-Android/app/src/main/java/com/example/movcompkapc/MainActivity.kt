@@ -1,7 +1,6 @@
 package com.example.movcompkapc
 
 import android.app.Activity
-import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +8,6 @@ import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
 import android.widget.Button
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : AppCompatActivity() {
@@ -66,12 +64,6 @@ class MainActivity : AppCompatActivity() {
                 irActividad(BListView::class.java)
             }
 
-        val botonBDD = findViewById<Button>(R.id.btn_ir_bdd)
-        botonBDD
-            .setOnClickListener{
-                irActividad(ECrudEntrenador::class.java)
-            }
-
         val botonIntentImplicito = findViewById<Button>(R.id.btn_ir_intent_implicito)
         botonIntentImplicito
             .setOnClickListener {
@@ -86,6 +78,12 @@ class MainActivity : AppCompatActivity() {
         botonIntent
             .setOnClickListener {
                 abrirActividadConParamatros(CIntentExplicitoParametros::class.java)
+            }
+
+        val botonCrudEntrenador = findViewById<Button>(R.id.btn_sqlite)
+        botonCrudEntrenador
+            .setOnClickListener{
+                irActividad(ECrudEntrenador::class.java)
             }
     }
 

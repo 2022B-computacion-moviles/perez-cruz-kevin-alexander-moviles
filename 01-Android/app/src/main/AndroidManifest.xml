@@ -15,12 +15,18 @@
         <activity
             android:name=".ECrudEntrenador"
             android:exported="false" />
+        <!-- android:exported="true" para que sea visible al compartir texto plano-->
         <activity
             android:name=".CIntentExplicitoParametros"
-            android:exported="false">
+            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".BListView"
