@@ -4,43 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 
 class BEntrenador(
-    /*var id: Int,
-    var nombre: String,
-    var descripción: String
-): Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString()!!,
-        parcel.readString()!!
-    ) {
-
-    }
-    fun tostring(): String {
-        return "{$nombre} - ${descripción}"
-    }
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
-        parcel.writeString(nombre)
-        parcel.writeString(descripción)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<BEntrenador> {
-        override fun createFromParcel(parcel: Parcel): BEntrenador {
-            return BEntrenador(parcel)
-        }
-
-        override fun newArray(size: Int): Array<BEntrenador?> {
-            return arrayOfNulls(size)
-        }
-    }*/
     var id: Int,
     var nombre: String?,
-    var descripcion: String?,
-) : Parcelable {
+    var descripcion: String?
+): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
@@ -49,9 +16,8 @@ class BEntrenador(
     }
 
     override fun toString(): String {
-        return "${nombre} - ${descripcion}"
+            return "{$nombre} - ${descripcion}"
     }
-
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(nombre)
