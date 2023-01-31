@@ -28,6 +28,7 @@ class FRecyclerViewAdaptadorNombreCedula(
         fun anadirLike(){
             numeroLikes++
             likesTextView.text = numeroLikes.toString()
+            contexto.aumentarTotalLikes()
         }
     }
     // Setear el Layput que vamos a utilizar
