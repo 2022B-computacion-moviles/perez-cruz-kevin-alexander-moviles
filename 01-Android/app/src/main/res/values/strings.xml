@@ -34,5 +34,6 @@
         <item>Martes</item>
         <item>Miércoles</item>
     </string-array>
+    <string name="title_activity_hfragmento">HFragmento</string>
 
 </resources>
