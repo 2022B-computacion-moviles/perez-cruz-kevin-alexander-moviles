@@ -26,8 +26,10 @@ class MedicoAdapter(
         salarioMedico.text = "$${medico.salario}"
         val esEspecialistaMedico = layout.findViewById<TextView>(R.id.tv_medicoEsEspecialista)
         esEspecialistaMedico.text = "${medico.esEspecialista}"
-        val fotoMedico = layout.findViewById<ImageView>(R.id.iv_fotoMedico)
-        fotoMedico.setImageResource(medico.image)
+
+        val imageUri = ImageController.getImageUri(mContext, medico.id.toLong())
+
+        layout.findViewById<ImageView>(R.id.iv_fotoMedico).setImageURI(imageUri)
 
         return layout
     }

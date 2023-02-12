@@ -12,7 +12,7 @@ interface MedicosDao {
     fun get(id: Int): LiveData<Medico>
 
     @Insert
-    fun insertAll(vararg medicos: Medico)
+    fun insertAll(vararg medicos: Medico) : List<Long>
 
     @Update
     fun update(medico: Medico)

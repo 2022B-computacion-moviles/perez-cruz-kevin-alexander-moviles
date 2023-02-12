@@ -1,5 +1,6 @@
 package com.example.deber01
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +19,7 @@ class MedicoActivity : AppCompatActivity() {
     private lateinit var database: AppDatabase
     private lateinit var medico: Medico
     private lateinit var medicoLiveData: LiveData<Medico>
+    private val EDIT_ACTIVITY = 49
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_medico)
@@ -25,6 +27,9 @@ class MedicoActivity : AppCompatActivity() {
         database = AppDatabase.getDatabase(this)
 
         val idMedicoActualizar = intent.getIntExtra("id", 0)
+
+        val imageUri = ImageController.getImageUri(this, idMedicoActualizar.toLong())
+        findViewById<ImageView>(R.id.iv_medicoImagen).setImageURI(imageUri)
 
         medicoLiveData = database.medicos().get(idMedicoActualizar)
 
@@ -38,8 +43,6 @@ class MedicoActivity : AppCompatActivity() {
             salarioMedico.text = "$${medico?.salario}"
             val esEspecialistaMedico = findViewById<TextView>(R.id.tv_medicoEspecialista)
             esEspecialistaMedico.text = "${medico?.esEspecialista}"
-            val fotoMedico = findViewById<ImageView>(R.id.iv_medicoImagen)
-            fotoMedico.setImageResource(medico!!.image)
         })
     }
 
@@ -54,17 +57,29 @@ class MedicoActivity : AppCompatActivity() {
             R.id.mm_editarMedico -> {
                 val intent = Intent(this, CreateMedico::class.java)
                 intent.putExtra("medico", medico)
-                startActivity(intent)
+                startActivityForResult(intent, EDIT_ACTIVITY)
             }
 
             R.id.mm_eliminarMedico -> {
                 medicoLiveData.removeObservers(this)
+
                 CoroutineScope(Dispatchers.IO).launch {
                     database.medicos().delete(medico)
+                    ImageController.deleteImage(this@MedicoActivity, medico.id.toLong())
                     this@MedicoActivity.finish()
                 }
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when {
+            requestCode == EDIT_ACTIVITY && resultCode == Activity.RESULT_OK -> {
+                findViewById<ImageView>(R.id.iv_medicoImagen).setImageURI(data!!.data)
+            }
+        }
     }
 }
