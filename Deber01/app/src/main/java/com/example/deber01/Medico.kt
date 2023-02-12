@@ -4,19 +4,23 @@ import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.RequiresApi
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "medico")
 class Medico(
-    var id: Int,
     var nombre: String?,
     var salario: Double,
     var esEspecialista: Boolean,
-    var image: Int
+    var image: Int,
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 ): Parcelable{
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
         parcel.readString(),
         parcel.readDouble(),
         parcel.readByte() != 0.toByte(),
+        parcel.readInt(),
         parcel.readInt()
     ) {
     }

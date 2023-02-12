@@ -131,7 +131,7 @@ class ESqliteHelper(
         )
         // Lógica obtener el usuario
         val existeMedico = resultadoConsultaLectura.moveToFirst()
-        var medicoEncontrado = Medico(0, "", 0.0, false, 0)
+        var medicoEncontrado = Medico("", 0.0, false, 0)
         val arreglo = arrayListOf<Medico>()
         if (existeMedico) {
             do {
@@ -140,7 +140,7 @@ class ESqliteHelper(
                 val salario = resultadoConsultaLectura.getDouble(2) // Columna indice 2 -> SALARIO
                 val esEspecialista = resultadoConsultaLectura.getInt(3) // Columna indice 3 -> EsEspecialista
                 if (id != null) {
-                    medicoEncontrado = Medico(0, "", 0.0, false,0)
+                    medicoEncontrado = Medico("", 0.0, false,0)
                     medicoEncontrado.id = id
                     medicoEncontrado.nombre = nombre
                     medicoEncontrado.salario = salario
@@ -163,7 +163,7 @@ class ESqliteHelper(
         )
         // Lógica obtener el usuario
         val existeMedico = resultadoConsultaLectura.moveToFirst()
-        var medico = Medico(0, "", 0.0, false,0)
+        var medico = Medico( "", 0.0, false,0)
         val medicos = arrayListOf<Medico>()
         do {
             val id = resultadoConsultaLectura.getInt(0) // columna indice 0 -> ID
