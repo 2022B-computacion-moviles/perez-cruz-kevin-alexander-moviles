@@ -12,4 +12,8 @@ class Medico(
     var image: Int,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-): Serializable
+): Serializable {
+    override fun toString(): String {
+        return "Medico(id=$id, nombre='$nombre', salario='$salario', esEspecialista='$esEspecialista')"
+    }
+}

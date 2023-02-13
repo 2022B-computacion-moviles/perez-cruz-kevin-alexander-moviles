@@ -1,6 +1,8 @@
 package com.example.deber01
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -61,13 +63,20 @@ class MedicoActivity : AppCompatActivity() {
             }
 
             R.id.mm_eliminarMedico -> {
-                medicoLiveData.removeObservers(this)
+                AlertDialog.Builder(this).apply {
+                    setTitle("Eliminar Médico")
+                    setMessage("¿Estás seguro de querer eliminar este registro? Esta acción es irreversible")
+                    setPositiveButton("Si") { _: DialogInterface, _: Int ->
+                        medicoLiveData.removeObservers(this@MedicoActivity)
 
-                CoroutineScope(Dispatchers.IO).launch {
-                    database.medicos().delete(medico)
-                    ImageController.deleteImage(this@MedicoActivity, medico.id.toLong())
-                    this@MedicoActivity.finish()
-                }
+                        CoroutineScope(Dispatchers.IO).launch {
+                            database.medicos().delete(medico)
+                            ImageController.deleteImage(this@MedicoActivity, medico.id.toLong())
+                            this@MedicoActivity.finish()
+                        }
+                    }
+                    setNegativeButton("No", null)
+                }.show()
             }
         }
         return super.onOptionsItemSelected(item)

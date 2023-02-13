@@ -5,10 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Medico::class], version = 1)
+@Database(entities = [Medico::class, Paciente::class], version = 9)
 abstract class AppDatabase : RoomDatabase(){
 
     abstract fun medicos(): MedicosDao
+    abstract fun pacientes(): PacientesDao
 
     companion object {
         @Volatile
@@ -26,7 +27,8 @@ abstract class AppDatabase : RoomDatabase(){
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration().build()
 
                 INSTANCE = instance
 

@@ -1,5 +1,7 @@
 package com.example.deber01
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,18 +9,20 @@ import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CRUDMedico : AppCompatActivity() {
     var idMedicoSeleccionado = 0
-
+    var medicos = emptyList<Medico>()
+    private val EDIT_ACTIVITY = 49
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var medicos = emptyList<Medico>()
+        //var medicos = emptyList<Medico>()
 
         val database = AppDatabase.getDatabase(this)
         val listViewMedico = findViewById<ListView>(R.id.lv_medicos)
@@ -68,14 +72,31 @@ class CRUDMedico : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.mm_editarMedico -> {
-
+                val intent = Intent(this, CreateMedico::class.java)
+                intent.putExtra("medico", medicos[idMedicoSeleccionado])
+                startActivityForResult(intent, EDIT_ACTIVITY)
                 return true
             }
             R.id.mm_eliminarMedico -> {
+                AlertDialog.Builder(this).apply {
+                    setTitle("Eliminar Médico")
+                    setMessage("¿Estás seguro de querer eliminar este registro? Esta acción es irreversible")
+                    setPositiveButton("Si") { _: DialogInterface, _: Int ->
+                        val database = AppDatabase.getDatabase(this@CRUDMedico)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            database.medicos().delete(medicos[idMedicoSeleccionado])
+                            ImageController.deleteImage(this@CRUDMedico, medicos[idMedicoSeleccionado].id.toLong())
+                        }
+                    }
+                    setNegativeButton("No", null)
+                }.show()
                 return true
             }
             R.id.mm_verpacientes -> {
-
+                val intent = Intent(this, CRUDPaciente::class.java)
+                intent.putExtra("idMedico", medicos[idMedicoSeleccionado].id)
+                intent.putExtra("nombreMedico", medicos[idMedicoSeleccionado].nombre)
+                startActivity(intent)
                 return true
             }
             else -> super.onContextItemSelected(item)
