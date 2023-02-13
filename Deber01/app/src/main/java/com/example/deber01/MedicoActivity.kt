@@ -78,6 +78,12 @@ class MedicoActivity : AppCompatActivity() {
                     setNegativeButton("No", null)
                 }.show()
             }
+            R.id.mm_verpacientes -> {
+                val intent = Intent(this, CRUDPaciente::class.java)
+                intent.putExtra("idMedico", medico.id)
+                intent.putExtra("nombreMedico", medico.nombre)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

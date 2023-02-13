@@ -21,7 +21,7 @@ class PacienteActivity : AppCompatActivity() {
     private lateinit var database: AppDatabase
     private lateinit var paciente: Paciente
     private lateinit var pacienteLiveData: LiveData<Paciente>
-    private val EDIT_ACTIVITY = 49
+    private val EDIT_ACTIVITY = 48
 
     var idMedico: Int = 0
 
@@ -62,6 +62,8 @@ class PacienteActivity : AppCompatActivity() {
         when (item.itemId){
             R.id.mm_editarPaciente -> {
                 val intent = Intent(this, CreatePaciente::class.java)
+                println(paciente.toString())
+                println(idMedico)
                 intent.putExtra("paciente", paciente)
                 intent.putExtra("idMedico", idMedico)
                 startActivityForResult(intent, EDIT_ACTIVITY)

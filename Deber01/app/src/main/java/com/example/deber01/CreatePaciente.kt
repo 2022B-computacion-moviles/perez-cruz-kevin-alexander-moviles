@@ -15,16 +15,16 @@ import kotlinx.coroutines.launch
 
 class CreatePaciente : AppCompatActivity() {
 
-    private val SELECT_ACTIVITY = 50
+    private val SELECT_ACTIVITY = 51
     private var imageUri: Uri? = null
     //private var idMedico: Int = 0
-
+    var idMedico: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_paciente)
 
         var idPaciente: Int? = null
-        val idMedico = intent.getIntExtra("idMedicoCreate", 0)
+        idMedico = intent.getIntExtra("idMedico", 0)
         println("IdMedico: ${idMedico}")
         if (intent.hasExtra("paciente")){
             val paciente = intent.extras?.getSerializable("paciente") as Paciente
@@ -48,7 +48,6 @@ class CreatePaciente : AppCompatActivity() {
             val nombre = findViewById<EditText>(R.id.input_nombrePaciente).text.toString()
             val peso = findViewById<EditText>(R.id.input_pesoPaciente).text.toString().toDouble()
             val seguro = findViewById<Switch>(R.id.sw_seguroPaciente).isChecked
-            println("IdMedico: ${idMedico}")
             val paciente = Paciente(idMedico = idMedico, nombre = nombre, peso = peso, tieneSeguro = seguro, imagen = R.drawable.ic_launcher_background)
             println(paciente.toString())
 

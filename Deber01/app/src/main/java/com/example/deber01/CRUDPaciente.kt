@@ -18,7 +18,7 @@ class CRUDPaciente : AppCompatActivity() {
 
     var idPacienteSeleccionado = 0
     var pacientes = emptyList<Paciente>()
-    private val EDIT_ACTIVITY = 49
+    private val EDIT_ACTIVITY = 48
 
     var idMedico: Int? = null
 
@@ -57,7 +57,7 @@ class CRUDPaciente : AppCompatActivity() {
         botonCrearPaciente
             .setOnClickListener {
                 val intent = Intent(this, CreatePaciente::class.java)
-                intent.putExtra("idMedicoCreate", idMedico)
+                intent.putExtra("idMedico", idMedico)
                 startActivity(intent)
             }
         registerForContextMenu(listViewPaciente)
