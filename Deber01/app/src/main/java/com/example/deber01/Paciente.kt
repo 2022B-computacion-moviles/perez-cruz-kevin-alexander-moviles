@@ -9,7 +9,7 @@ import java.io.Serializable
 @Entity(tableName = "paciente",  foreignKeys = [ForeignKey(entity = Medico::class, parentColumns = ["id"], childColumns = ["idMedico"], onDelete = CASCADE, onUpdate = CASCADE, deferred = false)])
 class Paciente(
     @PrimaryKey(autoGenerate = true)
-    var idPaciente: Int = 100,
+    var idPaciente: Int = 0,
     var nombre: String?,
     var peso: Double,
     var tieneSeguro: Boolean,
