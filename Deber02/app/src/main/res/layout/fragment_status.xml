@@ -1,14 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.StatusFragment">
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <FrameLayout
+        android:id="@+id/profileStatusFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Status Fragment" />
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
-</FrameLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/img_base_status"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="start|center_vertical"
+            />
+
+        <ImageView
+            android:id="@+id/profileAddStatus"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="@drawable/bg_circle"
+            android:backgroundTint="@color/green_500"
+            android:src="@drawable/ic_baseline_add_24"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="48dp"
+            app:tint="@color/white"
+            />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutChat"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="80dp"
+            android:orientation="vertical"
+            android:layout_gravity="start|center_vertical"
+            >
+
+            <TextView
+                android:id="@+id/profileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/my_status"
+                android:textSize="18sp"
+                android:textColor="?attr/colorSecondary"
+                android:layout_marginTop="12dp"
+                />
+
+            <TextView
+                android:id="@+id/profileMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tap_to_add_status_update"
+                android:textSize="14sp"
+                android:textColor="?attr/colorOnSecondary"
+                android:layout_marginTop="4dp"
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/statusRecyclerView"
+        android:layout_width="410dp"
+        android:layout_height="634dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileStatusFrame"
+        app:layout_constraintVertical_bias="1.0"
+        tools:listitem="@layout/item_status_layout" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingButtonEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_baseline_edit_24"
+        android:backgroundTint="@color/gray"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toTopOf="@id/floatingButtonCamera"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        app:fabCustomSize="48dp"
+        app:rippleColor="@color/black_200"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingButtonCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:contentDescription="@string/new_message"
+        android:src="@drawable/ic_baseline_camera_alt_24"
+        android:backgroundTint="@color/green_500"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        app:rippleColor="@color/teal_green_dark"
+        />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="8dp"
+        android:text="Recientes"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/statusRecyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileStatusFrame" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

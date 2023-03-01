@@ -1,5 +1,17 @@
 <resources>
-    <string name="app_name">Deber02</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">Whatsapp Clone</string>
+    <string name="title">WhatsApp</string>
+    <string name="tab_layout_one"> Chats </string>
+    <string name="tab_layout_two"> Llamadas </string>
+    <string name="tab_layout_three"> Estados </string>
+    <string name="user_name">Kevin</string>
+    <string name="user_message">.</string>
+    <string name="user_chat_time">08:58</string>
+    <string name="chat_alert">2</string>
+    <string name="new_message">Nuevo Mensaje</string>
+    <string name="my_status">Mi estado</string>
+    <string name="tap_to_add_status_update">Añade una actualización</string>
+    <string name="status_upload_time">Dos horas atras</string>
+    <string name="call_date">27 de febrero, 20:35</string>
+    <string name="message_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
 </resources>
