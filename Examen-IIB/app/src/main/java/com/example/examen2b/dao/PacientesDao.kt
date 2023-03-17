@@ -1,22 +1,6 @@
-package com.example.examen2b
+package com.example.examen2b.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
-
-@Dao
-interface PacientesDao {
-    @Query("SELECT paciente.idMedico, paciente.nombre, paciente.peso, paciente.tieneSeguro, paciente.imagen, paciente.idPaciente FROM paciente WHERE paciente.idMedico = :idMedico")
-    fun getPacientesPorIdMedico(idMedico: Int): LiveData<List<Paciente>>
-
-    @Query("SELECT paciente.idMedico, paciente.nombre, paciente.peso, paciente.tieneSeguro, paciente.imagen, paciente.idPaciente FROM paciente, medico WHERE paciente.idPaciente = :idPaciente AND medico.id = :idMedico")
-    fun getPacientePorId(idPaciente: Int, idMedico: Int): LiveData<Paciente>
-
-    @Insert
-    fun insert(vararg paciente: Paciente) : List<Long>
-
-    @Update
-    fun update(paciente: Paciente)
-
-    @Delete
-    fun delete(paciente: Paciente)
+import com.example.examen2b.entidades.Paciente
+interface PacientesDao: GeneralDao<Paciente, Int>{
+    fun getPacientesPorMedico(medicoId: Int,onSuccess: (ArrayList<Paciente>) -> Unit)
 }

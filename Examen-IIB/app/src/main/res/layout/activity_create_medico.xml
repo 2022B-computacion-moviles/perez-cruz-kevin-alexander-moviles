@@ -7,6 +7,32 @@
     tools:context=".CreateMedico">
 
     <EditText
+        android:id="@+id/input_aniosExp"
+        android:layout_width="357dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="Años Experiencia:"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sw_esEspecialistaMedico" />
+
+    <EditText
+        android:id="@+id/input_fechaNacimientoDr"
+        android:layout_width="357dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="Fecha de Nacimiento:"
+        android:inputType="date"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_aniosExp" />
+
+    <EditText
         android:id="@+id/input_nombreMedico"
         android:layout_width="357dp"
         android:layout_height="50dp"
@@ -24,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
-        android:text="Crear/Editar un registro de médico"
+        android:text="Crear un registro de médico"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -47,15 +73,13 @@
         android:layout_width="146dp"
         android:layout_height="65dp"
         android:layout_marginStart="149dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="143dp"
         android:layout_marginEnd="168dp"
-        android:layout_marginBottom="104dp"
         android:text="Guardar"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.326"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_imageSelectMedico" />
+        app:layout_constraintTop_toBottomOf="@+id/input_fechaNacimientoDr" />
 
     <EditText
         android:id="@+id/input_salarioMedico"
@@ -68,15 +92,5 @@
         android:inputType="numberDecimal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_nombreMedico" />
-
-    <ImageView
-        android:id="@+id/iv_imageSelectMedico"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sw_esEspecialistaMedico"
-        app:srcCompat="@drawable/placeholder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

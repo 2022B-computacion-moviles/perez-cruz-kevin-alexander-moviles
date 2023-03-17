@@ -1,101 +1,120 @@
 package com.example.examen2b
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import com.example.examen2b.dao.ConsultorioDao
+import com.example.examen2b.entidades.Paciente
+import java.time.LocalDate
 
 class PacienteActivity : AppCompatActivity() {
 
-    private lateinit var database: AppDatabase
-    private lateinit var paciente: Paciente
-    private lateinit var pacienteLiveData: LiveData<Paciente>
-    private val EDIT_ACTIVITY = 48
-
-    var idMedico: Int = 0
+    private var selectedPacienteId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paciente)
 
-        database = AppDatabase.getDatabase(this)
-        //
-        val idPacienteActualizar = intent.getIntExtra("id", 0)
-        idMedico = intent.getIntExtra("idMedico", 0)
-        //
-        val imageUri = ImageController.getImageUri(this, idPacienteActualizar.toLong())
-        findViewById<ImageView>(R.id.iv_pacienteImagen).setImageURI(imageUri)
+        val idPaciente = findViewById<TextView>(R.id.tv_editarPaciente)
+        val idMedico = findViewById<TextView>(R.id.tv_medicoPacienteEdit)
 
-        pacienteLiveData = database.pacientes().getPacientePorId(idPacienteActualizar, idMedico)
+        val nombrePlainText = findViewById<EditText>(R.id.input_nombrePacienteEdit)
+        val pesoPlainText = findViewById<EditText>(R.id.input_pesoPacienteEdit)
+        val tieneSeguroPlainText = findViewById<Switch>(R.id.sw_seguroPacienteEdit)
+        val diasDietaPlainText = findViewById<EditText>(R.id.input_diasDietaEdit)
+        val fechaNacimientoPlainText = findViewById<EditText>(R.id.input_fechaNacimientoEdit)
 
-        pacienteLiveData.observe(this, Observer {
-            paciente = it
-            val idPaciente = findViewById<TextView>(R.id.tv_pacienteID)
-            idPaciente.text = "${paciente?.idPaciente}"
-            val nombrePaciente = findViewById<TextView>(R.id.tv_pacienteNombre)
-            nombrePaciente.text = paciente?.nombre
-            val pesoPaciente = findViewById<TextView>(R.id.tv_pacientePeso)
-            pesoPaciente.text = "${paciente?.peso} kg"
-            val seguroPaciente = findViewById<TextView>(R.id.tv_seguroPaciente)
-            seguroPaciente.text = "${paciente?.tieneSeguro}"
-        })
+        val btnEditarPaciente = findViewById<Button>(R.id.btn_editarPaciente)
+
+        var selectedComponent: Paciente? = null
+        selectedPacienteId = intent.getIntExtra("selectedPacienteId", 0)
+
+        // Setting component data when it is ready
+        ConsultorioDao.consultorio.getPacienteDao().read(
+            selectedPacienteId!!,
+            onSuccess = { component ->
+                selectedComponent = component
+
+                idPaciente.setText(selectedComponent!!.id.toString())
+                idMedico.setText(selectedComponent!!.idMedico.toString())
+
+                nombrePlainText.setText(selectedComponent!!.nombre)
+                pesoPlainText.setText(selectedComponent!!.peso.toString())
+                tieneSeguroPlainText.setChecked(selectedComponent!!.tieneSeguro)
+                diasDietaPlainText.setText(selectedComponent!!.diasDieta.toString())
+                fechaNacimientoPlainText.setText(selectedComponent!!.fechaNacimiento.toString())
+            }
+        )
+
+        btnEditarPaciente.setOnClickListener {
+                openEditionDialog(
+                    Paciente(
+                        selectedPacienteId!!,
+                        selectedComponent!!.idMedico,
+                        nombrePlainText.text.toString(),
+                        pesoPlainText.text.toString().toDouble(),
+                        tieneSeguroPlainText.isChecked,
+                        diasDietaPlainText.text.toString().toInt(),
+                        LocalDate.parse(fechaNacimientoPlainText.text.toString())
+                    ),
+                    selectedComponent!!.idMedico
+                )
+        }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menupaciente, menu)
+    @SuppressLint("NotifyDataSetChanged")
+    private fun openEditionDialog(editedComponent: Paciente, selectedMedicoId: Int) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Editar")
+        builder.setMessage("Estas seguro de editar este Paciente?")
 
-        return super.onCreateOptionsMenu(menu)
+        builder.setPositiveButton("Sí") { _, _ ->
+            ConsultorioDao.consultorio.getPacienteDao().update(editedComponent)
+            Toast.makeText(this, "Paciente Editado", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, CRUDPaciente::class.java)
+            intent.putExtra("selectedMedicoId", selectedMedicoId)
+            startActivity(intent)
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+        val dialog = builder.create()
+        dialog.show()
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
-            R.id.mm_editarPaciente -> {
-                val intent = Intent(this, CreatePaciente::class.java)
-                println(paciente.toString())
-                println(idMedico)
-                intent.putExtra("paciente", paciente)
-                intent.putExtra("idMedico", idMedico)
-                startActivityForResult(intent, EDIT_ACTIVITY)
-            }
-
             R.id.mm_eliminarPaciente -> {
-                AlertDialog.Builder(this).apply {
-                    setTitle("Eliminar Paciente")
-                    setMessage("¿Estás seguro de querer eliminar este registro? Esta acción es irreversible")
-                    setPositiveButton("Si") { _: DialogInterface, _: Int ->
-                        pacienteLiveData.removeObservers(this@PacienteActivity)
 
-                        CoroutineScope(Dispatchers.IO).launch {
-                            database.pacientes().delete(paciente)
-                            ImageController.deleteImage(this@PacienteActivity, paciente.idPaciente.toLong())
-                            this@PacienteActivity.finish()
-                        }
-                    }
-                    setNegativeButton("No", null)
-                }.show()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    @SuppressLint("NotifyDataSetChanged")
+    private fun openDeleteDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Eliminar")
+        builder.setMessage("Estas seguro de querer eliminar este registro de Paciente?")
 
-        when {
-            requestCode == EDIT_ACTIVITY && resultCode == Activity.RESULT_OK -> {
-                findViewById<ImageView>(R.id.iv_pacienteImagen).setImageURI(data!!.data)
-            }
+        builder.setPositiveButton("Sí") { _, _ ->
+            ConsultorioDao.consultorio.getPacienteDao().delete(
+                selectedPacienteId!!,
+                onSuccess = {
+                    val intent = Intent(this, CRUDPaciente::class.java)
+                    startActivity(intent)
+                }
+            )
+            Toast.makeText(this, "Paciente Eliminado", Toast.LENGTH_SHORT).show()
         }
+
+        builder.setNegativeButton("No") { _, _ -> }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }

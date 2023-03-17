@@ -1,105 +1,120 @@
 package com.example.examen2b
 
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.MenuItem
-import android.view.View
 import android.widget.*
-import androidx.lifecycle.Observer
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
+import com.example.examen2b.dao.ConsultorioDao
+import com.example.examen2b.entidades.Medico
+import com.example.examen2b.inicialData.MedicoInicialData
+import com.example.examen2b.inicialData.PacienteInicialData
 
 class CRUDMedico : AppCompatActivity() {
-    var idMedicoSeleccionado = 0
-    var medicos = emptyList<Medico>()
-    private val EDIT_ACTIVITY = 49
+    private var selectedMedicoId: Int? = null
+    var medicosList = ArrayList<Medico>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //var medicos = emptyList<Medico>()
+        val medicosRv = findViewById<RecyclerView>(R.id.rv_medicos)
+        val btnCrear = findViewById<Button>(R.id.btn_crearMedico)
 
-        val database = AppDatabase.getDatabase(this)
-        val listViewMedico = findViewById<ListView>(R.id.lv_medicos)
+        ConsultorioDao.consultorio.getMedicoDao().getAllMedicos(
+            onSuccess = { medicos ->
+                medicosList = medicos
+                if(medicosList.isEmpty()){
+                    initData()
+                    openActivity(CRUDMedico::class.java)
 
-        database.medicos().getAll().observe(this, Observer {
-            medicos = it
-
-            val adaptadorMedico = MedicoAdapter(
-                this,
-                medicos
-            )
-            listViewMedico.adapter = adaptadorMedico
-            adaptadorMedico.notifyDataSetChanged()
-        })
-
-        listViewMedico.setOnItemClickListener { adapterView, view, i, l ->
-            val intent = Intent(this, MedicoActivity::class.java)
-            intent.putExtra("id", medicos[i].id)
-            startActivity(intent)
-        }
-
-        val botonCrearMedico = findViewById<Button>(R.id.btn_crearMedico)
-        botonCrearMedico
-            .setOnClickListener {
-                val intent = Intent(this, CreateMedico::class.java)
-                startActivity(intent)
+                }
+                initializeRecyclerView(medicosList, medicosRv)
+                registerForContextMenu(medicosRv)
             }
-
-        registerForContextMenu(listViewMedico)
+        )
+        btnCrear.setOnClickListener {
+            openActivity(CreateMedico::class.java)
+        }
     }
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu?,
-        v: View?,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        // Llenamos las opciones del menu
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menumedico, menu)
-        // Obtener el id del ArrayListSeleccionado
-        val info = menuInfo as AdapterView.AdapterContextMenuInfo
-        val id = info.position
-        idMedicoSeleccionado = id
+    private fun initData() {
+        for (medico in MedicoInicialData.medicosInitData) {
+            ConsultorioDao.consultorio.getMedicoDao().create(medico)
+        }
+
+        for (paciente in PacienteInicialData.pacientesInitData) {
+            ConsultorioDao.consultorio.getPacienteDao().create(paciente)
+        }
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.mm_editarMedico -> {
-                val intent = Intent(this, CreateMedico::class.java)
-                intent.putExtra("medico", medicos[idMedicoSeleccionado])
-                startActivityForResult(intent, EDIT_ACTIVITY)
+                val intent = Intent(this, MedicoActivity::class.java)
+                intent.putExtra("selectedMedicoId", selectedMedicoId)
+                startActivity(intent)
                 return true
             }
             R.id.mm_eliminarMedico -> {
-                AlertDialog.Builder(this).apply {
-                    setTitle("Eliminar Médico")
-                    setMessage("¿Estás seguro de querer eliminar este registro? Esta acción es irreversible")
-                    setPositiveButton("Si") { _: DialogInterface, _: Int ->
-                        val database = AppDatabase.getDatabase(this@CRUDMedico)
-                        CoroutineScope(Dispatchers.IO).launch {
-                            database.medicos().delete(medicos[idMedicoSeleccionado])
-                            ImageController.deleteImage(this@CRUDMedico, medicos[idMedicoSeleccionado].id.toLong())
-                        }
-                    }
-                    setNegativeButton("No", null)
-                }.show()
+                openDeleteDialog()
                 return true
             }
             R.id.mm_verpacientes -> {
                 val intent = Intent(this, CRUDPaciente::class.java)
-                intent.putExtra("idMedico", medicos[idMedicoSeleccionado].id)
-                intent.putExtra("nombreMedico", medicos[idMedicoSeleccionado].nombre)
+                intent.putExtra("selectedMedicoId", selectedMedicoId)
                 startActivity(intent)
                 return true
             }
             else -> super.onContextItemSelected(item)
         }
+    }
+
+    fun setSelectedMedicoId(medicoId: Int) {
+        selectedMedicoId = medicoId
+    }
+
+    private fun openDeleteDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Eliminar")
+        builder.setMessage("Esta seguro de querer eliminar este registro de Médico?")
+
+        builder.setPositiveButton("Si") { _, _ ->
+            ConsultorioDao.consultorio.getMedicoDao().delete(
+                selectedMedicoId!!,
+                onSuccess = {
+                    ConsultorioDao.consultorio.getMedicoDao().getAllMedicos(
+                        onSuccess = { medicos ->
+                            initializeRecyclerView(medicos, findViewById(R.id.rv_medicos))
+                        }
+                    )
+                }
+            )
+            Toast.makeText(this, "Médico Eliminado", Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initializeRecyclerView(
+        list: ArrayList<Medico>,
+        recyclerView: RecyclerView
+    ) {
+        val adapter = MedicoAdapter(this, list)
+
+        recyclerView.adapter = adapter
+        recyclerView.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun openActivity(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        startActivity(intent)
     }
 }
