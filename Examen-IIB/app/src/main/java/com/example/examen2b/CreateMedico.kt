@@ -1,9 +1,7 @@
 package com.example.examen2b
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -22,10 +20,6 @@ class CreateMedico : AppCompatActivity() {
         val esEspecialista = findViewById<Switch>(R.id.sw_esEspecialistaMedico)
         val aniosExp = findViewById<EditText>(R.id.input_aniosExp)
         val fechaNacimiento = findViewById<EditText>(R.id.input_fechaNacimientoDr)
-
-        /*fechaNacimiento.setOnClickListener{
-
-        }*/
 
         val guardarMedico = findViewById<Button>(R.id.btn_guardarMedico)
 
