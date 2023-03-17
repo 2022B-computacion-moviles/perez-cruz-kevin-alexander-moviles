@@ -13,7 +13,6 @@ class Paciente(
     var nombre: String?,
     var peso: Double,
     var tieneSeguro: Boolean,
-    var imagen: Int,
     var idMedico: Int
 ): Serializable {
     override fun toString(): String {
